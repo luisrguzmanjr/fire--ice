@@ -132,10 +132,13 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function hitPlayer () {
-    music.powerDown.play()
-    if (hitDamage == -0.5 && ctrDamage == 0) {
+    if (hitDamage == -0.5 && ctrDamage < maxArmor) {
         ctrDamage += 1
+        music.playTone(294, music.beat(BeatFraction.Sixteenth))
+        music.playTone(387, music.beat(BeatFraction.Sixteenth))
+        music.playTone(584, music.beat(BeatFraction.Sixteenth))
     } else {
+        music.powerDown.play()
         info.changeLifeBy(-1)
         ctrDamage = 0
         // skip
@@ -156,10 +159,12 @@ function hitPlayer () {
 }
 function sendBonus () {
     if (Math.percentChance(0.1)) {
-        createShip()
+            createBonusShip()
+            bCreateHealthShip = 0
+            bNeedHealth = 0
+            bNeedBonus = 1
     }
-    if (bCreateShip) {
-        bNeedBonus = 1
+    if (bCreateBonusShip) {
         if (bTripleBonus) {
             armorBonus = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
@@ -251,7 +256,7 @@ sprites.onOverlap(SpriteKind.Health, SpriteKind.Player, function (sprite, otherS
     sprite.destroy()
     getHealth()
 })
-function createShip () {
+function createBonusShip () {
     shipSprite = sprites.create(img`
         . . . . . . . c d . . . . . . . 
         . . . . . . . c d . . . . . . . 
@@ -279,7 +284,37 @@ function createShip () {
     50,
     true
     )
-    bCreateShip = 1
+    bCreateBonusShip = 1
+}
+function createHealthShip () {
+    shipSprite = sprites.create(img`
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c b . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . c 2 . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . e 2 . . . . . . . 
+        . . . . . . e e 4 e . . . . . . 
+        . . . . . . e 2 4 e . . . . . . 
+        . . . . . c c c e e e . . . . . 
+        . . . . e e 2 2 2 4 e e . . . . 
+        . . c f f f c c e e f f e e . . 
+        . c c c c e e 2 2 2 2 4 2 e e . 
+        c c c c c c e e 2 2 2 4 2 2 e e 
+        c c c c c c e e 2 2 2 2 4 2 e e 
+        `, SpriteKind.Helper)
+    shipSprite.setPosition(160, 10)
+    shipSprite.setVelocity(-26, 0)
+    shipSprite.setFlag(SpriteFlag.DestroyOnWall, true)
+    animation.runImageAnimation(
+    shipSprite,
+    shipFrames,
+    50,
+    true
+    )
+    bCreateHealthShip = 1
 }
 sprites.onOverlap(SpriteKind.Bonus, SpriteKind.Player, function (sprite, otherSprite) {
     sprite.destroy()
@@ -314,36 +349,45 @@ sprites.onOverlap(SpriteKind.specialHProjectile, SpriteKind.Enemy, function (spr
     }
 })
 function getBonus () {
-    bCreateShip = 0
+    bCreateBonusShip = 0
     if (bNeedBonus) {
+        music.playMelody("E E G - G G B C5 ", 480)
         if (bTripleBonus) {
             hitDamage = -0.5
+            maxArmor += 1
+            game.showLongText("You got " + (maxArmor+1) + " hit armor!", DialogLayout.Bottom)
         } else if (bDoubleBonus) {
             bTripleBonus = 1
             bTripleHAmmo = 1
+            game.showLongText("You got triple ammo!  Try not to get hit or you will lose it!", DialogLayout.Bottom)
         } else if (bIceBonus) {
             bDoubleBonus = 1
             bDoubleHAmmo = 1
+            game.showLongText("You got double ammo! Try not to get hit or you will lose it!", DialogLayout.Bottom)
         } else {
             bIceBonus = 1
             bIceAmmo = 1
+            game.showLongText("You got ice ammo! Try not to get hit or you will lose it!", DialogLayout.Bottom)
         }
     }
     bNeedBonus = 0
 }
 function getHealth () {
-    bCreateShip = 0
-    if (bNeedBonus) {
+    bCreateHealthShip = 0
+    if (bNeedHealth) {
+        music.powerUp.play()
         info.changeLifeBy(1)
     }
-    bNeedBonus = 0
+    bNeedHealth = 0
 }
 function sendHealth () {
-    if (Math.percentChance(0.1)) {
-        createShip()
+    if(Math.percentChance(0.1)) {
+            createHealthShip()
+            bCreateBonusShip = 0
+            bNeedBonus = 0
+            bNeedHealth = 1
     }
-    if (bCreateShip) {
-        bNeedBonus = 1
+    if(bCreateHealthShip){
         healthBonus = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -367,7 +411,9 @@ function sendHealth () {
 }
 sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite, otherSprite) {
     sprite.destroy()
-    music.powerUp.play()
+    music.playTone(494, music.beat(BeatFraction.Sixteenth))
+    music.playTone(587, music.beat(BeatFraction.Sixteenth))
+    music.playTone(784, music.beat(BeatFraction.Sixteenth))
     info.changeScoreBy(1)
     if (info.score() % 20 == 0) {
         info.changeLifeBy(1)
@@ -396,6 +442,9 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
     }
 })
 sprites.onOverlap(SpriteKind.Bonus, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
+    sprite.destroy()
+})
+sprites.onOverlap(SpriteKind.Health, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
     sprite.destroy()
 })
 function setFrame () {
@@ -809,6 +858,7 @@ let bTripleAmmo = 0
 let bDoubleAmmo = 0
 let healthBonus: Sprite = null
 let maxFrozen = 0
+let maxArmor = 0
 let vyPrevEnemy = 0
 let bFrozen = 0
 let clouds: Image[] = []
@@ -817,7 +867,9 @@ let shipFrames: Image[] = []
 let shipSprite: Sprite = null
 let armorBonus: Sprite = null
 let bNeedBonus = 0
-let bCreateShip = 0
+let bNeedHealth = 0
+let bCreateBonusShip = 0
+let bCreateHealthShip = 0
 let bIceBonus = 0
 let bDoubleBonus = 0
 let bTripleBonus = 0
@@ -1140,9 +1192,7 @@ game.onUpdateInterval(1000, function () {
     }
 })
 game.onUpdateInterval(1500, function () {
-    if (Math.percentChance(0.1)) {
-        sendHealth()
-    }
+    sendHealth()
 })
 forever(function () {
     if (Math.percentChance(60)) {
