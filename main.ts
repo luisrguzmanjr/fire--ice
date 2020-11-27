@@ -1,14 +1,10 @@
-enum ActionKind {
-    Walking,
-    Idle,
-    Jumping
-}
 namespace SpriteKind {
     export const heroProjectile = SpriteKind.create()
     export const enemyProjectile = SpriteKind.create()
     export const specialEProjectile = SpriteKind.create()
     export const specialHProjectile = SpriteKind.create()
     export const Bonus = SpriteKind.create()
+    export const Health = SpriteKind.create()
     export const heroIceProjectile = SpriteKind.create()
     export const Helper = SpriteKind.create()
     export const Bkgrd = SpriteKind.create()
@@ -165,27 +161,27 @@ function sendBonus () {
     if (bCreateShip) {
         bNeedBonus = 1
         if (bTripleBonus) {
-            snowAmmo3 = sprites.createProjectileFromSprite(img`
+            armorBonus = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
-                . . . . . . 2 . . 2 . . . . . . 
-                . . . . . 2 2 2 2 2 2 . . . . . 
-                . . . . 2 2 2 2 2 2 2 2 . . . . 
-                . . . . 2 2 2 2 2 2 2 2 . . . . 
-                . . . . 2 2 2 2 2 2 2 2 . . . . 
-                . . . . . 2 2 2 2 2 2 . . . . . 
-                . . . . . . 2 2 2 2 . . . . . . 
-                . . . . . . . 2 2 . . . . . . . 
+                . . . . . e e e e e e . . . . . 
+                . . . . e 5 4 4 4 4 4 e . . . . 
+                . . . . e 4 5 5 4 4 4 e . . . . 
+                . . . . e 4 4 4 5 5 4 e . . . . 
+                . . . . e 4 4 4 4 4 5 e . . . . 
+                . . . . . e 4 4 4 4 e . . . . . 
+                . . . . . . e 4 4 e . . . . . . 
+                . . . . . . . e e . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, shipSprite, 0, 10)
-            snowAmmo3.setKind(SpriteKind.Bonus)
+            armorBonus.setKind(SpriteKind.Bonus)
         } else if (bDoubleBonus) {
-            snowAmmo2 = sprites.createProjectileFromSprite(img`
+            snowAmmo3 = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -203,9 +199,9 @@ function sendBonus () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, shipSprite, 0, 10)
-            snowAmmo2.setKind(SpriteKind.Bonus)
+            snowAmmo3.setKind(SpriteKind.Bonus)
         } else if (bIceBonus) {
-            healthBonus = sprites.createProjectileFromSprite(img`
+            snowAmmo2 = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -223,7 +219,7 @@ function sendBonus () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, shipSprite, 0, 10)
-            healthBonus.setKind(SpriteKind.Bonus)
+            snowAmmo2.setKind(SpriteKind.Bonus)
         } else {
             iceAmmo = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
@@ -251,9 +247,10 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.specialEProjectile, function
     otherSprite.destroy()
     sprite.destroy()
 })
-function shootEnemyFire () {
-	
-}
+sprites.onOverlap(SpriteKind.Health, SpriteKind.Player, function (sprite, otherSprite) {
+    sprite.destroy()
+    getHealth()
+})
 function createShip () {
     shipSprite = sprites.create(img`
         . . . . . . . c d . . . . . . . 
@@ -320,7 +317,6 @@ function getBonus () {
     bCreateShip = 0
     if (bNeedBonus) {
         if (bTripleBonus) {
-            info.changeLifeBy(1)
             hitDamage = -0.5
         } else if (bDoubleBonus) {
             bTripleBonus = 1
@@ -334,6 +330,40 @@ function getBonus () {
         }
     }
     bNeedBonus = 0
+}
+function getHealth () {
+    bCreateShip = 0
+    if (bNeedBonus) {
+        info.changeLifeBy(1)
+    }
+    bNeedBonus = 0
+}
+function sendHealth () {
+    if (Math.percentChance(0.1)) {
+        createShip()
+    }
+    if (bCreateShip) {
+        bNeedBonus = 1
+        healthBonus = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 2 . . 2 . . . . . . 
+            . . . . . 2 2 2 2 2 2 . . . . . 
+            . . . . 2 2 2 2 2 2 2 2 . . . . 
+            . . . . 2 2 2 2 2 2 2 2 . . . . 
+            . . . . 2 2 2 2 2 2 2 2 . . . . 
+            . . . . . 2 2 2 2 2 2 . . . . . 
+            . . . . . . 2 2 2 2 . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, shipSprite, 0, 10)
+        healthBonus.setKind(SpriteKind.Health)
+    }
 }
 sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite, otherSprite) {
     sprite.destroy()
@@ -777,14 +807,15 @@ let enemyFrames: Image[] = []
 let bESpecialAmmo = 0
 let bTripleAmmo = 0
 let bDoubleAmmo = 0
+let healthBonus: Sprite = null
 let maxFrozen = 0
 let vyPrevEnemy = 0
 let bFrozen = 0
 let clouds: Image[] = []
 let cloud: Sprite = null
 let shipFrames: Image[] = []
-let healthBonus: Sprite = null
 let shipSprite: Sprite = null
+let armorBonus: Sprite = null
 let bNeedBonus = 0
 let bCreateShip = 0
 let bIceBonus = 0
@@ -1106,6 +1137,11 @@ game.onUpdateInterval(msTimer, function () {
 game.onUpdateInterval(1000, function () {
     if (Math.percentChance(40)) {
         createCloud()
+    }
+})
+game.onUpdateInterval(1500, function () {
+    if (Math.percentChance(0.1)) {
+        sendHealth()
     }
 })
 forever(function () {
