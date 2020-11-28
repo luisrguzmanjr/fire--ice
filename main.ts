@@ -168,8 +168,8 @@ function hitPlayer () {
         music.playTone(387, music.beat(BeatFraction.Sixteenth))
         music.playTone(584, music.beat(BeatFraction.Sixteenth))
     } else {
-        music.powerDown.play()
         info.changeLifeBy(-1)
+        music.powerDown.play()
         ctrDamage = 0
         // skip
         if (bTripleHAmmo) {
@@ -184,7 +184,7 @@ function hitPlayer () {
         }
     }
     if (info.life() == 0) {
-        game.over(false)
+        game.over(false, effects.slash)
     }
 }
 function sendBonus () {
@@ -324,7 +324,7 @@ sprites.onOverlap(SpriteKind.specialHProjectile, SpriteKind.Enemy, function (spr
 function getBonus () {
     bCreateBonusShip = 0
     if (bNeedBonus) {
-        music.playMelody("E E G - G G B C5 ", 480)
+        bNeedBonus = 0
         if (bTripleBonus) {
             hitDamage = -0.5
             maxArmor += 1
@@ -446,16 +446,16 @@ function getBonus () {
                 `)
             game.showLongText("You got ice ammo! Try not to get hit or you will lose it!", DialogLayout.Bottom)
         }
+        music.playMelody("E E G - G G B C5 ", 480)
     }
-    bNeedBonus = 0
 }
 function getHealth () {
     bCreateHealthShip = 0
     if (bNeedHealth) {
-        music.powerUp.play()
+        bNeedHealth = 0
         info.changeLifeBy(1)
+        music.powerUp.play()
     }
-    bNeedHealth = 0
 }
 function sendHealth () {
     if (Math.percentChance(0.1)) {
@@ -496,10 +496,10 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
         if (bFrozen) {
             vyEnemy += 0
         } else {
-            if (vyEnemy >= 10 && vyEnemy <= 80) {
+            if (vyEnemy >= 15 && vyEnemy <= 80) {
                 vyEnemy += randint(-10, 10)
             } else {
-                vyEnemy = randint(10, 80)
+                vyEnemy = randint(15, 80)
             }
         }
         if (msTimer > minTimer) {
@@ -1276,7 +1276,7 @@ game.onUpdate(function () {
 game.onUpdateInterval(msTimer, function () {
     if (bFrozen) {
         if (maxFrozen <= 1000) {
-            maxFrozen += msTimer
+            maxFrozen += 500
         } else {
             vyEnemy = vyPrevEnemy
             enemySprite.setVelocity(0, vyEnemy)
