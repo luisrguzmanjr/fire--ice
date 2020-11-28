@@ -20,6 +20,39 @@ sprites.onOverlap(SpriteKind.enemyProjectile, SpriteKind.Player, function (sprit
     hitPlayer()
 })
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    shootAtEnemy()
+})
+function createHealthShip () {
+    shipSprite = sprites.create(img`
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c b . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . c 2 . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . e 2 . . . . . . . 
+        . . . . . . e e 4 e . . . . . . 
+        . . . . . . e 2 4 e . . . . . . 
+        . . . . . c c c e e e . . . . . 
+        . . . . e e 2 2 2 4 e e . . . . 
+        . . c f f f c c e e f f e e . . 
+        . c c c c e e 2 2 2 2 4 2 e e . 
+        c c c c c c e e 2 2 2 4 2 2 e e 
+        c c c c c c e e 2 2 2 2 4 2 e e 
+        `, SpriteKind.Helper)
+    shipSprite.setPosition(160, 10)
+    shipSprite.setVelocity(-26, 0)
+    shipSprite.setFlag(SpriteFlag.DestroyOnWall, true)
+    animation.runImageAnimation(
+    shipSprite,
+    shipFrames,
+    50,
+    true
+    )
+    bCreateHealthShip = 1
+}
+function shootAtEnemy () {
     animation.runImageAnimation(
     mySprite,
     playerframes,
@@ -130,36 +163,6 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             `, mySprite, 75, -20)
         snowAmmo3.setKind(SpriteKind.Projectile)
     }
-})
-function createHealthShip () {
-    shipSprite = sprites.create(img`
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c b . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . c 2 . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . e 2 . . . . . . . 
-        . . . . . . e e 4 e . . . . . . 
-        . . . . . . e 2 4 e . . . . . . 
-        . . . . . c c c e e e . . . . . 
-        . . . . e e 2 2 2 4 e e . . . . 
-        . . c f f f c c e e f f e e . . 
-        . c c c c e e 2 2 2 2 4 2 e e . 
-        c c c c c c e e 2 2 2 4 2 2 e e 
-        c c c c c c e e 2 2 2 2 4 2 e e 
-        `, SpriteKind.Helper)
-    shipSprite.setPosition(160, 10)
-    shipSprite.setVelocity(-26, 0)
-    shipSprite.setFlag(SpriteFlag.DestroyOnWall, true)
-    animation.runImageAnimation(
-    shipSprite,
-    shipFrames,
-    50,
-    true
-    )
-    bCreateHealthShip = 1
 }
 function hitPlayer () {
     if (hitDamage == -0.5 && ctrDamage < maxArmor) {
@@ -296,6 +299,9 @@ function createCloud () {
     cloud.z = -2
     cloud.setKind(SpriteKind.Bkgrd)
 }
+controller.B.onEvent(ControllerButtonEvent.Repeated, function () {
+    shootAtEnemy()
+})
 sprites.onOverlap(SpriteKind.heroIceProjectile, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
     otherSprite.destroy()
     sprite.destroy()
@@ -1033,9 +1039,6 @@ let bDoubleBonus = 0
 let bTripleBonus = 0
 let maxArmor = 0
 let ctrDamage = 0
-let bCreateHealthShip = 0
-let shipFrames: Image[] = []
-let shipSprite: Sprite = null
 let snowAmmo3: Sprite = null
 let bTripleHAmmo = 0
 let snowAmmo2: Sprite = null
@@ -1046,6 +1049,9 @@ let iceAmmo: Sprite = null
 let bIceAmmo = 0
 let snowAmmo: Sprite = null
 let playerframes: Image[] = []
+let bCreateHealthShip = 0
+let shipFrames: Image[] = []
+let shipSprite: Sprite = null
 let vyEnemy = 0
 let enemySprite: Sprite = null
 let mySprite: Sprite = null
@@ -1224,6 +1230,7 @@ enemySprite = sprites.create(img`
     . . f f c c c c c c c c . . . . 
     `, SpriteKind.Enemy)
 setFrame()
+controller.setRepeatDefault(200, 200)
 game.setDialogCursor(img`
     ........................
     .....ffff...............
