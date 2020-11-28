@@ -19,7 +19,7 @@ sprites.onOverlap(SpriteKind.enemyProjectile, SpriteKind.Player, function (sprit
     sprite.destroy()
     hitPlayer()
 })
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     mySprite,
     playerframes,
@@ -131,6 +131,36 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         snowAmmo3.setKind(SpriteKind.Projectile)
     }
 })
+function createHealthShip () {
+    shipSprite = sprites.create(img`
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c b . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . c 2 . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . e 2 . . . . . . . 
+        . . . . . . e e 4 e . . . . . . 
+        . . . . . . e 2 4 e . . . . . . 
+        . . . . . c c c e e e . . . . . 
+        . . . . e e 2 2 2 4 e e . . . . 
+        . . c f f f c c e e f f e e . . 
+        . c c c c e e 2 2 2 2 4 2 e e . 
+        c c c c c c e e 2 2 2 4 2 2 e e 
+        c c c c c c e e 2 2 2 2 4 2 e e 
+        `, SpriteKind.Helper)
+    shipSprite.setPosition(160, 10)
+    shipSprite.setVelocity(-26, 0)
+    shipSprite.setFlag(SpriteFlag.DestroyOnWall, true)
+    animation.runImageAnimation(
+    shipSprite,
+    shipFrames,
+    50,
+    true
+    )
+    bCreateHealthShip = 1
+}
 function hitPlayer () {
     if (hitDamage == -0.5 && ctrDamage < maxArmor) {
         ctrDamage += 1
@@ -159,10 +189,10 @@ function hitPlayer () {
 }
 function sendBonus () {
     if (Math.percentChance(0.1)) {
-            createBonusShip()
-            bCreateHealthShip = 0
-            bNeedHealth = 0
-            bNeedBonus = 1
+        createBonusShip()
+        bCreateHealthShip = 0
+        bNeedHealth = 0
+        bNeedBonus = 1
     }
     if (bCreateBonusShip) {
         if (bTripleBonus) {
@@ -256,66 +286,6 @@ sprites.onOverlap(SpriteKind.Health, SpriteKind.Player, function (sprite, otherS
     sprite.destroy()
     getHealth()
 })
-function createBonusShip () {
-    shipSprite = sprites.create(img`
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c b . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . c 2 . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . e 2 . . . . . . . 
-        . . . . . . e e 4 e . . . . . . 
-        . . . . . . e 2 4 e . . . . . . 
-        . . . . . c c c e e e . . . . . 
-        . . . . e e 2 2 2 4 e e . . . . 
-        . . c f f f c c e e f f e e . . 
-        . c c c c e e 2 2 2 2 4 2 e e . 
-        c c c c c c e e 2 2 2 4 2 2 e e 
-        c c c c c c e e 2 2 2 2 4 2 e e 
-        `, SpriteKind.Helper)
-    shipSprite.setPosition(160, 10)
-    shipSprite.setVelocity(-26, 0)
-    shipSprite.setFlag(SpriteFlag.DestroyOnWall, true)
-    animation.runImageAnimation(
-    shipSprite,
-    shipFrames,
-    50,
-    true
-    )
-    bCreateBonusShip = 1
-}
-function createHealthShip () {
-    shipSprite = sprites.create(img`
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c d . . . . . . . 
-        . . . . . . . c b . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . c 2 . . . . . . . 
-        . . . . . . . f f . . . . . . . 
-        . . . . . . . e 2 . . . . . . . 
-        . . . . . . e e 4 e . . . . . . 
-        . . . . . . e 2 4 e . . . . . . 
-        . . . . . c c c e e e . . . . . 
-        . . . . e e 2 2 2 4 e e . . . . 
-        . . c f f f c c e e f f e e . . 
-        . c c c c e e 2 2 2 2 4 2 e e . 
-        c c c c c c e e 2 2 2 4 2 2 e e 
-        c c c c c c e e 2 2 2 2 4 2 e e 
-        `, SpriteKind.Helper)
-    shipSprite.setPosition(160, 10)
-    shipSprite.setVelocity(-26, 0)
-    shipSprite.setFlag(SpriteFlag.DestroyOnWall, true)
-    animation.runImageAnimation(
-    shipSprite,
-    shipFrames,
-    50,
-    true
-    )
-    bCreateHealthShip = 1
-}
 sprites.onOverlap(SpriteKind.Bonus, SpriteKind.Player, function (sprite, otherSprite) {
     sprite.destroy()
     getBonus()
@@ -328,6 +298,9 @@ function createCloud () {
 }
 sprites.onOverlap(SpriteKind.heroIceProjectile, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
     otherSprite.destroy()
+    sprite.destroy()
+})
+sprites.onOverlap(SpriteKind.Health, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
     sprite.destroy()
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
@@ -355,18 +328,122 @@ function getBonus () {
         if (bTripleBonus) {
             hitDamage = -0.5
             maxArmor += 1
-            game.showLongText("You got " + (maxArmor+1) + " hit armor!", DialogLayout.Bottom)
+            game.setDialogCursor(img`
+                ........................
+                .....ffff...............
+                ...fff22fff.............
+                ..fff2222fff............
+                .fffeeeeeefff...........
+                .ffe222222eef...........
+                .fe2ffffff2ef...........
+                .ffffeeeeffff...........
+                ffefbf44fbfeff..........
+                fee41fddf14eef..........
+                .ffffdddddeef...........
+                fddddf444eef............
+                fbbbbf2222f4e...........
+                fbbbbf2222fd4...........
+                .fccf45544f44...........
+                ..ffffffff..............
+                ....ff..ff..............
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                `)
+            game.showLongText("You got " + (maxArmor + 1) + " hit armor!", DialogLayout.Bottom)
         } else if (bDoubleBonus) {
             bTripleBonus = 1
             bTripleHAmmo = 1
+            game.setDialogCursor(img`
+                ........................
+                .....ffff...............
+                ...fff22fff.............
+                ..fff2222fff............
+                .fffeeeeeefff...........
+                .ffe222222eef...........
+                .fe2ffffff2ef...........
+                .ffffeeeeffff...........
+                ffefbf44fbfeff..........
+                fee41fddf14eef..........
+                .ffffdddddeef...........
+                fddddf444eef............
+                fbbbbf2222f4e...........
+                fbbbbf2222fd4...........
+                .fccf45544f44...........
+                ..ffffffff..............
+                ....ff..ff..............
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                `)
             game.showLongText("You got triple ammo!  Try not to get hit or you will lose it!", DialogLayout.Bottom)
         } else if (bIceBonus) {
             bDoubleBonus = 1
             bDoubleHAmmo = 1
+            game.setDialogCursor(img`
+                ........................
+                .....ffff...............
+                ...fff22fff.............
+                ..fff2222fff............
+                .fffeeeeeefff...........
+                .ffe222222eef...........
+                .fe2ffffff2ef...........
+                .ffffeeeeffff...........
+                ffefbf44fbfeff..........
+                fee41fddf14eef..........
+                .ffffdddddeef...........
+                fddddf444eef............
+                fbbbbf2222f4e...........
+                fbbbbf2222fd4...........
+                .fccf45544f44...........
+                ..ffffffff..............
+                ....ff..ff..............
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                `)
             game.showLongText("You got double ammo! Try not to get hit or you will lose it!", DialogLayout.Bottom)
         } else {
             bIceBonus = 1
             bIceAmmo = 1
+            game.setDialogCursor(img`
+                ........................
+                .....ffff...............
+                ...fff22fff.............
+                ..fff2222fff............
+                .fffeeeeeefff...........
+                .ffe222222eef...........
+                .fe2ffffff2ef...........
+                .ffffeeeeffff...........
+                ffefbf44fbfeff..........
+                fee41fddf14eef..........
+                .ffffdddddeef...........
+                fddddf444eef............
+                fbbbbf2222f4e...........
+                fbbbbf2222fd4...........
+                .fccf45544f44...........
+                ..ffffffff..............
+                ....ff..ff..............
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                ........................
+                `)
             game.showLongText("You got ice ammo! Try not to get hit or you will lose it!", DialogLayout.Bottom)
         }
     }
@@ -381,13 +458,13 @@ function getHealth () {
     bNeedHealth = 0
 }
 function sendHealth () {
-    if(Math.percentChance(0.1)) {
-            createHealthShip()
-            bCreateBonusShip = 0
-            bNeedBonus = 0
-            bNeedHealth = 1
+    if (Math.percentChance(0.1)) {
+        createHealthShip()
+        bCreateBonusShip = 0
+        bNeedBonus = 0
+        bNeedHealth = 1
     }
-    if(bCreateHealthShip){
+    if (bCreateHealthShip) {
         healthBonus = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -416,7 +493,6 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
     music.playTone(784, music.beat(BeatFraction.Sixteenth))
     info.changeScoreBy(1)
     if (info.score() % 20 == 0) {
-        info.changeLifeBy(1)
         if (bFrozen) {
             vyEnemy += 0
         } else {
@@ -431,20 +507,76 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
         }
         bHSpecialAmmo = 1
     }
-    if (info.score() >= 80) {
+    if (info.score() == 80) {
+        game.setDialogCursor(img`
+            . . . . . c c c c c c c . . . . 
+            . . . . c 6 7 7 7 7 7 6 c . . . 
+            . . . c 7 c 6 6 6 6 c 7 6 c . . 
+            . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+            . . f 7 8 1 f f 1 6 7 7 7 f . . 
+            . . f 6 f 1 f f 1 f 7 7 7 f . . 
+            . . . f f 2 2 2 2 f 7 7 6 f . . 
+            . . c c f 2 2 2 2 7 7 6 f c . . 
+            . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
+            c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
+            f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
+            f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . f 6 1 1 1 1 1 6 6 6 6 c . . . 
+            . . f f c c c c c c c c . . . . 
+            `)
+        game.showLongText("Prepare for double fire!", DialogLayout.Bottom)
         bDoubleAmmo = 1
     }
-    if (info.score() >= 100) {
+    if (info.score() == 100) {
+        game.setDialogCursor(img`
+            . . . . . c c c c c c c . . . . 
+            . . . . c 6 7 7 7 7 7 6 c . . . 
+            . . . c 7 c 6 6 6 6 c 7 6 c . . 
+            . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+            . . f 7 8 1 f f 1 6 7 7 7 f . . 
+            . . f 6 f 1 f f 1 f 7 7 7 f . . 
+            . . . f f 2 2 2 2 f 7 7 6 f . . 
+            . . c c f 2 2 2 2 7 7 6 f c . . 
+            . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
+            c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
+            f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
+            f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . f 6 1 1 1 1 1 6 6 6 6 c . . . 
+            . . f f c c c c c c c c . . . . 
+            `)
+        game.showLongText("Triple fire will melt you!", DialogLayout.Bottom)
         bTripleAmmo = 1
+        effects.blizzard.startScreenEffect()
     }
-    if (info.score() >= 150) {
+    if (info.score() == 150) {
+        game.setDialogCursor(img`
+            . . . . . c c c c c c c . . . . 
+            . . . . c 6 7 7 7 7 7 6 c . . . 
+            . . . c 7 c 6 6 6 6 c 7 6 c . . 
+            . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+            . . f 7 8 1 f f 1 6 7 7 7 f . . 
+            . . f 6 f 1 f f 1 f 7 7 7 f . . 
+            . . . f f 2 2 2 2 f 7 7 6 f . . 
+            . . c c f 2 2 2 2 7 7 6 f c . . 
+            . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
+            c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
+            f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
+            f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
+            f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
+            . f 6 1 1 1 1 1 6 6 6 6 c . . . 
+            . . f f c c c c c c c c . . . . 
+            `)
+        game.showLongText("Now it is time you feel my full wrath!", DialogLayout.Bottom)
+        effects.blizzard.endScreenEffect()
         bESpecialAmmo = 1
     }
 })
 sprites.onOverlap(SpriteKind.Bonus, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
-    sprite.destroy()
-})
-sprites.onOverlap(SpriteKind.Health, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
     sprite.destroy()
 })
 function setFrame () {
@@ -800,6 +932,36 @@ function setFrame () {
         `
     ]
 }
+function createBonusShip () {
+    shipSprite = sprites.create(img`
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c d . . . . . . . 
+        . . . . . . . c b . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . c 2 . . . . . . . 
+        . . . . . . . f f . . . . . . . 
+        . . . . . . . e 2 . . . . . . . 
+        . . . . . . e e 4 e . . . . . . 
+        . . . . . . e 2 4 e . . . . . . 
+        . . . . . c c c e e e . . . . . 
+        . . . . e e 2 2 2 4 e e . . . . 
+        . . c f f f c c e e f f e e . . 
+        . c c c c e e 2 2 2 2 4 2 e e . 
+        c c c c c c e e 2 2 2 4 2 2 e e 
+        c c c c c c e e 2 2 2 2 4 2 e e 
+        `, SpriteKind.Helper)
+    shipSprite.setPosition(160, 10)
+    shipSprite.setVelocity(-26, 0)
+    shipSprite.setFlag(SpriteFlag.DestroyOnWall, true)
+    animation.runImageAnimation(
+    shipSprite,
+    shipFrames,
+    50,
+    true
+    )
+    bCreateBonusShip = 1
+}
 sprites.onOverlap(SpriteKind.specialEProjectile, SpriteKind.heroProjectile, function (sprite, otherSprite) {
     otherSprite.destroy()
 })
@@ -858,22 +1020,22 @@ let bTripleAmmo = 0
 let bDoubleAmmo = 0
 let healthBonus: Sprite = null
 let maxFrozen = 0
-let maxArmor = 0
 let vyPrevEnemy = 0
 let bFrozen = 0
 let clouds: Image[] = []
 let cloud: Sprite = null
-let shipFrames: Image[] = []
-let shipSprite: Sprite = null
 let armorBonus: Sprite = null
+let bCreateBonusShip = 0
 let bNeedBonus = 0
 let bNeedHealth = 0
-let bCreateBonusShip = 0
-let bCreateHealthShip = 0
 let bIceBonus = 0
 let bDoubleBonus = 0
 let bTripleBonus = 0
+let maxArmor = 0
 let ctrDamage = 0
+let bCreateHealthShip = 0
+let shipFrames: Image[] = []
+let shipSprite: Sprite = null
 let snowAmmo3: Sprite = null
 let bTripleHAmmo = 0
 let snowAmmo2: Sprite = null
@@ -891,10 +1053,10 @@ let hitDamage = 0
 let msTimer = 0
 let minTimer = 0
 game.splash("Fire & Ice")
-minTimer = 200
+minTimer = 100
 msTimer = 1000
 hitDamage = -1
-info.setLife(5)
+info.setLife(3)
 scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -1062,6 +1224,34 @@ enemySprite = sprites.create(img`
     . . f f c c c c c c c c . . . . 
     `, SpriteKind.Enemy)
 setFrame()
+game.setDialogCursor(img`
+    ........................
+    .....ffff...............
+    ...fff22fff.............
+    ..fff2222fff............
+    .fffeeeeeefff...........
+    .ffe222222eef...........
+    .fe2ffffff2ef...........
+    .ffffeeeeffff...........
+    ffefbf44fbfeff..........
+    fee41fddf14eef..........
+    .ffffdddddeef...........
+    fddddf444eef............
+    fbbbbf2222f4e...........
+    fbbbbf2222fd4...........
+    .fccf45544f44...........
+    ..ffffffff..............
+    ....ff..ff..............
+    ........................
+    ........................
+    ........................
+    ........................
+    ........................
+    ........................
+    ........................
+    `)
+game.showLongText("Fight fire with ice!  Use your Icelandic sword to fight the fire snake! Chill him with your snow power and you will turn his fire balls to ice.  Collect the ice for points and collect the bonus items!  You will need them!", DialogLayout.Bottom)
+game.showLongText("Shoot with B (X on the keyboard)", DialogLayout.Bottom)
 game.onUpdate(function () {
     if (controller.right.isPressed() && controller.down.isPressed()) {
         mySprite.setVelocity(50, 50)
@@ -1184,7 +1374,9 @@ game.onUpdateInterval(msTimer, function () {
             missleAmmo.follow(mySprite)
         }
     }
-    sendBonus()
+})
+game.onUpdateInterval(2000, function () {
+    sendHealth()
 })
 game.onUpdateInterval(1000, function () {
     if (Math.percentChance(40)) {
@@ -1192,7 +1384,7 @@ game.onUpdateInterval(1000, function () {
     }
 })
 game.onUpdateInterval(1500, function () {
-    sendHealth()
+    sendBonus()
 })
 forever(function () {
     if (Math.percentChance(60)) {
