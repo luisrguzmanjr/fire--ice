@@ -297,10 +297,24 @@ sprites.onOverlap(SpriteKind.Health, SpriteKind.Player, function (sprite, otherS
     sprite.destroy()
     getHealth()
 })
+function hitArmor () {
+    if (currHealth > targetHealth) {
+        currHealth += -1
+        fillHealthBar(myHealthBar, maxHealth, currHealth)
+    }
+}
 sprites.onOverlap(SpriteKind.Bonus, SpriteKind.Player, function (sprite, otherSprite) {
     sprite.destroy()
     getBonus()
 })
+// BEGIN health bar
+function fillHealthBar (healthBar: Sprite, maxHealth: number, currHealth: number) {
+    percent = Math.constrain(currHealth / maxHealth, 0, 1)
+    healthBarImage = healthBar.image
+    healthBarImage.drawRect(1, 1, healthBar.width - 2, 2, 2)
+    healthBarImage.drawRect(1, 1, (healthBar.width - 2) * percent, 2, 7)
+    healthBarImage.drawRect(0, 0, healthBar.width, healthBar.height, 12)
+}
 function createCloud () {
     cloud = sprites.createProjectileFromSide(clouds[randint(0, clouds.length - 1)], -30, 0)
     cloud.bottom = randint(30, 55)
@@ -1043,6 +1057,8 @@ let vyPrevEnemy = 0
 let bFrozen = 0
 let clouds: Image[] = []
 let cloud: Sprite = null
+let healthBarImage: Image = null
+let percent = 0
 let armorBonus: Sprite = null
 let bCreateBonusShip = 0
 let bNeedBonus = 0
@@ -1066,6 +1082,10 @@ let bCreateHealthShip = 0
 let shipFrames: Image[] = []
 let shipSprite: Sprite = null
 let vyEnemy = 0
+let targetHealth = 0
+let currHealth = 0
+let maxHealth = 0
+let myHealthBar: Sprite = null
 let enemySprite: Sprite = null
 let mySprite: Sprite = null
 let hitDamage = 0
@@ -1272,31 +1292,13 @@ game.setDialogCursor(img`
     `)
 game.showLongText("Fight fire with ice!  Use your Icelandic sword to fight the fire snake! Chill him with your snow power and you will turn his fire to ice.  Collect the ice for points and collect the bonus items!  You will need them!", DialogLayout.Bottom)
 game.showLongText("Shoot with B (X on the keyboard). Hold down for rapid fire.", DialogLayout.Bottom)
-//BEGIN health bar
-function fillHealthBar (healthBar: Sprite, maxHealth: number, currHealth: number) {
-    percent = Math.constrain(currHealth / maxHealth, 0, 1)
-    healthBarImage = healthBar.image
-    healthBarImage.drawRect(1, 1, healthBar.width - 2, 2, 2)
-    healthBarImage.drawRect(1, 1, (healthBar.width - 2) * percent, 2, 7)
-    healthBarImage.drawRect(0, 0, healthBar.width, healthBar.height, 12)
-}
-let healthBarImage: Image = null
-let percent = 0
-let targetHealth = 0
-let myHealthBar: Sprite = sprites.create(image.create(40, 4), SpriteKind.ArmorBar)
-myHealthBar.setPosition(0,0)
-let maxHealth = 1
-let currHealth = maxHealth
+myHealthBar = sprites.create(image.create(40, 4), SpriteKind.ArmorBar)
+myHealthBar.setPosition(0, 0)
+maxHealth = 1
+currHealth = maxHealth
 targetHealth = maxHealth
 fillHealthBar(myHealthBar, maxHealth, currHealth)
-function hitArmor() {
-    if (currHealth > targetHealth) {
-        currHealth += -1
-        fillHealthBar(myHealthBar, maxHealth, currHealth)
-    }
-}
-//END health bar
-
+// END health bar
 game.onUpdate(function () {
     if (controller.right.isPressed() && controller.down.isPressed()) {
         mySprite.setVelocity(50, 50)
@@ -1339,11 +1341,11 @@ game.onUpdateInterval(msTimer, function () {
             . . . . . . . . . . . . . . . . 
             . . . 4 4 4 4 4 4 4 . . . . . . 
             . . 4 8 2 2 2 2 2 5 4 . . . . . 
-            . . 4 8 8 2 2 2 5 5 4 . . . . . 
-            . . 4 8 2 2 4 2 2 5 4 . . . . . 
-            . . 4 2 2 4 4 4 2 2 4 . . . . . 
-            . . 4 8 2 2 4 2 2 5 4 . . . . . 
-            . . 4 8 8 2 2 2 5 5 4 . . . . . 
+            . 4 4 8 8 2 2 2 5 5 4 4 . . . . 
+            4 4 4 8 2 2 4 2 2 5 4 4 4 4 . . 
+            4 4 4 2 2 4 4 4 2 2 4 4 4 4 4 . 
+            4 4 4 8 2 2 4 2 2 5 4 4 4 4 . . 
+            . 4 4 8 8 2 2 2 5 5 4 4 . . . . 
             . . 4 8 2 2 2 2 2 5 4 . . . . . 
             . . . 4 4 4 4 4 4 4 . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -1359,11 +1361,11 @@ game.onUpdateInterval(msTimer, function () {
                 . . . . . . . . . . . . . . . . 
                 . . . 4 4 4 4 4 4 4 . . . . . . 
                 . . 4 8 2 2 2 2 2 5 4 . . . . . 
-                . . 4 8 8 2 2 2 5 5 4 . . . . . 
-                . . 4 8 2 2 4 2 2 5 4 . . . . . 
-                . . 4 2 2 4 4 4 2 2 4 . . . . . 
-                . . 4 8 2 2 4 2 2 5 4 . . . . . 
-                . . 4 8 8 2 2 2 5 5 4 . . . . . 
+                . 4 4 8 8 2 2 2 5 5 4 4 . . . . 
+                4 4 4 8 2 2 4 2 2 5 4 4 4 4 . . 
+                4 4 4 2 2 4 4 4 2 2 4 4 4 4 4 . 
+                4 4 4 8 2 2 4 2 2 5 4 4 4 4 . . 
+                . 4 4 8 8 2 2 2 5 5 4 4 . . . . 
                 . . 4 8 2 2 2 2 2 5 4 . . . . . 
                 . . . 4 4 4 4 4 4 4 . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -1380,11 +1382,11 @@ game.onUpdateInterval(msTimer, function () {
                 . . . . . . . . . . . . . . . . 
                 . . . 4 4 4 4 4 4 4 . . . . . . 
                 . . 4 8 2 2 2 2 2 5 4 . . . . . 
-                . . 4 8 8 2 2 2 5 5 4 . . . . . 
-                . . 4 8 2 2 4 2 2 5 4 . . . . . 
-                . . 4 2 2 4 4 4 2 2 4 . . . . . 
-                . . 4 8 2 2 4 2 2 5 4 . . . . . 
-                . . 4 8 8 2 2 2 5 5 4 . . . . . 
+                . 4 4 8 8 2 2 2 5 5 4 4 . . . . 
+                4 4 4 8 2 2 4 2 2 5 4 4 4 4 . . 
+                4 4 4 2 2 4 4 4 2 2 4 4 4 4 4 . 
+                4 4 4 8 2 2 4 2 2 5 4 4 4 4 . . 
+                . 4 4 8 8 2 2 2 5 5 4 4 . . . . 
                 . . 4 8 2 2 2 2 2 5 4 . . . . . 
                 . . . 4 4 4 4 4 4 4 . . . . . . 
                 . . . . . . . . . . . . . . . . 
