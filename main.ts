@@ -5,6 +5,7 @@ namespace SpriteKind {
     export const specialHProjectile = SpriteKind.create()
     export const Bonus = SpriteKind.create()
     export const Health = SpriteKind.create()
+    export const ArmorBar = SpriteKind.create()
     export const heroIceProjectile = SpriteKind.create()
     export const Helper = SpriteKind.create()
     export const Bkgrd = SpriteKind.create()
@@ -167,10 +168,17 @@ function shootAtEnemy () {
 function hitPlayer () {
     if (hitDamage == -0.5 && ctrDamage < maxArmor) {
         ctrDamage += 1
+        hitArmor()
         music.playTone(294, music.beat(BeatFraction.Sixteenth))
         music.playTone(387, music.beat(BeatFraction.Sixteenth))
         music.playTone(584, music.beat(BeatFraction.Sixteenth))
     } else {
+        if (hitDamage == -0.5) {
+            hitArmor()
+            maxHealth = maxArmor + 1
+            currHealth = maxHealth
+            fillHealthBar(myHealthBar, maxHealth, currHealth)
+        }
         info.changeLifeBy(-1)
         music.powerDown.play()
         ctrDamage = 0
@@ -191,7 +199,7 @@ function hitPlayer () {
     }
 }
 function sendBonus () {
-    if (Math.percentChance(0.1)) {
+    if (Math.percentChance(10)) {
         createBonusShip()
         bCreateHealthShip = 0
         bNeedHealth = 0
@@ -333,7 +341,11 @@ function getBonus () {
         bNeedBonus = 0
         if (bTripleBonus) {
             hitDamage = -0.5
+            ctrDamage = 0
             maxArmor += 1
+            maxHealth = maxArmor + 1
+            currHealth = maxHealth
+            fillHealthBar(myHealthBar, maxHealth, currHealth)
             game.setDialogCursor(img`
                 ........................
                 .....ffff...............
@@ -1259,6 +1271,32 @@ game.setDialogCursor(img`
     `)
 game.showLongText("Fight fire with ice!  Use your Icelandic sword to fight the fire snake! Chill him with your snow power and you will turn his fire balls to ice.  Collect the ice for points and collect the bonus items!  You will need them!", DialogLayout.Bottom)
 game.showLongText("Shoot with B (X on the keyboard)", DialogLayout.Bottom)
+
+//BEGIN health bar
+function fillHealthBar (healthBar: Sprite, maxHealth: number, currHealth: number) {
+    percent = Math.constrain(currHealth / maxHealth, 0, 1)
+    healthBarImage = healthBar.image
+    healthBarImage.drawRect(1, 1, healthBar.width - 2, 2, 2)
+    healthBarImage.drawRect(1, 1, (healthBar.width - 2) * percent, 2, 7)
+    healthBarImage.drawRect(0, 0, healthBar.width, healthBar.height, 12)
+}
+let healthBarImage: Image = null
+let percent = 0
+let targetHealth = 0
+let myHealthBar: Sprite = sprites.create(image.create(40, 4), SpriteKind.ArmorBar)
+myHealthBar.setPosition(25, 117)
+let maxHealth = 1
+let currHealth = maxHealth
+targetHealth = maxHealth
+fillHealthBar(myHealthBar, maxHealth, currHealth) 
+function hitArmor() {
+    if (currHealth > targetHealth) {
+        currHealth += -1
+        fillHealthBar(myHealthBar, maxHealth, currHealth)
+    }
+}
+//END health bar
+
 game.onUpdate(function () {
     if (controller.right.isPressed() && controller.down.isPressed()) {
         mySprite.setVelocity(50, 50)
