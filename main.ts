@@ -199,7 +199,7 @@ function hitPlayer () {
     }
 }
 function sendBonus () {
-    if (Math.percentChance(10)) {
+    if (Math.percentChance(0.1)) {
         createBonusShip()
         bCreateHealthShip = 0
         bNeedHealth = 0
