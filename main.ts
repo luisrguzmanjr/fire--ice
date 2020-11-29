@@ -345,6 +345,7 @@ function getBonus () {
             maxArmor += 1
             maxHealth = maxArmor + 1
             currHealth = maxHealth
+            myHealthBar.setPosition(25, 117)
             fillHealthBar(myHealthBar, maxHealth, currHealth)
             game.setDialogCursor(img`
                 ........................
@@ -1284,11 +1285,11 @@ let healthBarImage: Image = null
 let percent = 0
 let targetHealth = 0
 let myHealthBar: Sprite = sprites.create(image.create(40, 4), SpriteKind.ArmorBar)
-myHealthBar.setPosition(25, 117)
+myHealthBar.setPosition(0,0)
 let maxHealth = 1
 let currHealth = maxHealth
 targetHealth = maxHealth
-fillHealthBar(myHealthBar, maxHealth, currHealth) 
+fillHealthBar(myHealthBar, maxHealth, currHealth)
 function hitArmor() {
     if (currHealth > targetHealth) {
         currHealth += -1
