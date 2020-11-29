@@ -199,7 +199,7 @@ function hitPlayer () {
     }
 }
 function sendBonus () {
-    if (Math.percentChance(0.1)) {
+    if ((Math.percentChance(0.5) && maxArmor < 2) || (Math.percentChance(0.5) && bTripleBonus == 0)) {
         createBonusShip()
         bCreateHealthShip = 0
         bNeedHealth = 0
