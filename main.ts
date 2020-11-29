@@ -60,7 +60,7 @@ function shootAtEnemy () {
     50,
     false
     )
-    snowAmmo = sprites.createProjectileFromSprite(img`
+    snowPower = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -79,9 +79,9 @@ function shootAtEnemy () {
         . . . . . . . . . . . . . . . . 
         `, mySprite, 75, 0)
     music.pewPew.play()
-    snowAmmo.setKind(SpriteKind.Projectile)
-    if (bIceAmmo) {
-        iceAmmo = sprites.createProjectileFromSprite(img`
+    snowPower.setKind(SpriteKind.Projectile)
+    if (bIcePower) {
+        icePower = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . 9 . . . . . . . . . . 
@@ -99,10 +99,10 @@ function shootAtEnemy () {
             . . . . . 9 . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mySprite, 90, 0)
-        iceAmmo.setKind(SpriteKind.heroIceProjectile)
+        icePower.setKind(SpriteKind.heroIceProjectile)
     }
-    if (bHSpecialAmmo) {
-        freezeAmmo = sprites.createProjectileFromSprite(img`
+    if (bHSpecialPower) {
+        freezePower = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . 6 6 6 6 . . . . . . 
             . . . . 6 6 6 5 5 6 6 6 . . . . 
@@ -120,10 +120,10 @@ function shootAtEnemy () {
             . . . . . . 6 6 6 6 . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mySprite, 80, 0)
-        freezeAmmo.setKind(SpriteKind.specialHProjectile)
+        freezePower.setKind(SpriteKind.specialHProjectile)
     }
-    if (bDoubleHAmmo) {
-        snowAmmo2 = sprites.createProjectileFromSprite(img`
+    if (bDoubleHPower) {
+        snowPower2 = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -141,10 +141,10 @@ function shootAtEnemy () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mySprite, 75, 20)
-        snowAmmo2.setKind(SpriteKind.Projectile)
+        snowPower2.setKind(SpriteKind.Projectile)
     }
-    if (bTripleHAmmo) {
-        snowAmmo3 = sprites.createProjectileFromSprite(img`
+    if (bTripleHPower) {
+        snowPower3 = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -162,7 +162,7 @@ function shootAtEnemy () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, mySprite, 75, -20)
-        snowAmmo3.setKind(SpriteKind.Projectile)
+        snowPower3.setKind(SpriteKind.Projectile)
     }
 }
 function hitPlayer () {
@@ -183,14 +183,14 @@ function hitPlayer () {
         music.powerDown.play()
         ctrDamage = 0
         // skip
-        if (bTripleHAmmo) {
-            bTripleHAmmo = 0
+        if (bTripleHPower) {
+            bTripleHPower = 0
             bTripleBonus = 0
-        } else if (bDoubleHAmmo) {
-            bDoubleHAmmo = 0
+        } else if (bDoubleHPower) {
+            bDoubleHPower = 0
             bDoubleBonus = 0
-        } else if (bIceAmmo) {
-            bIceAmmo = 0
+        } else if (bIcePower) {
+            bIcePower = 0
             bIceBonus = 0
         }
     }
@@ -227,7 +227,7 @@ function sendBonus () {
                 `, shipSprite, 0, 10)
             armorBonus.setKind(SpriteKind.Bonus)
         } else if (bDoubleBonus) {
-            snowAmmo3 = sprites.createProjectileFromSprite(img`
+            snowPower3 = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -245,9 +245,9 @@ function sendBonus () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, shipSprite, 0, 10)
-            snowAmmo3.setKind(SpriteKind.Bonus)
+            snowPower3.setKind(SpriteKind.Bonus)
         } else if (bIceBonus) {
-            snowAmmo2 = sprites.createProjectileFromSprite(img`
+            snowPower2 = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -265,9 +265,9 @@ function sendBonus () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, shipSprite, 0, 10)
-            snowAmmo2.setKind(SpriteKind.Bonus)
+            snowPower2.setKind(SpriteKind.Bonus)
         } else {
-            iceAmmo = sprites.createProjectileFromSprite(img`
+            icePower = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 . . . . . 9 . . . . . . . . . . 
@@ -285,7 +285,7 @@ function sendBonus () {
                 . . . . . 9 . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, shipSprite, 0, 10)
-            iceAmmo.setKind(SpriteKind.Bonus)
+            icePower.setKind(SpriteKind.Bonus)
         }
     }
 }
@@ -331,7 +331,7 @@ sprites.onOverlap(SpriteKind.specialHProjectile, SpriteKind.Enemy, function (spr
         vyEnemy = 0
         otherSprite.setVelocity(0, vyEnemy)
         otherSprite.startEffect(effects.blizzard, 2000)
-        bHSpecialAmmo = 0
+        bHSpecialPower = 0
         maxFrozen = 0
     }
 })
@@ -376,7 +376,7 @@ function getBonus () {
             game.showLongText("You got " + (maxArmor + 1) + " hit armor!", DialogLayout.Bottom)
         } else if (bDoubleBonus) {
             bTripleBonus = 1
-            bTripleHAmmo = 1
+            bTripleHPower = 1
             game.setDialogCursor(img`
                 ........................
                 .....ffff...............
@@ -403,10 +403,10 @@ function getBonus () {
                 ........................
                 ........................
                 `)
-            game.showLongText("You got triple ammo!  Try not to get hit or you will lose it!", DialogLayout.Bottom)
+            game.showLongText("You got triple power!  Try not to get hit or you will lose it!", DialogLayout.Bottom)
         } else if (bIceBonus) {
             bDoubleBonus = 1
-            bDoubleHAmmo = 1
+            bDoubleHPower = 1
             game.setDialogCursor(img`
                 ........................
                 .....ffff...............
@@ -433,10 +433,10 @@ function getBonus () {
                 ........................
                 ........................
                 `)
-            game.showLongText("You got double ammo! Try not to get hit or you will lose it!", DialogLayout.Bottom)
+            game.showLongText("You got double power! Try not to get hit or you will lose it!", DialogLayout.Bottom)
         } else {
             bIceBonus = 1
-            bIceAmmo = 1
+            bIcePower = 1
             game.setDialogCursor(img`
                 ........................
                 .....ffff...............
@@ -463,7 +463,7 @@ function getBonus () {
                 ........................
                 ........................
                 `)
-            game.showLongText("You got ice ammo! Try not to get hit or you will lose it!", DialogLayout.Bottom)
+            game.showLongText("You got ice power! Try not to get hit or you will lose it!", DialogLayout.Bottom)
         }
         music.playMelody("E E G - G G B C5 ", 480)
     }
@@ -524,7 +524,7 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
         if (msTimer > minTimer) {
             msTimer += -100
         }
-        bHSpecialAmmo = 1
+        bHSpecialPower = 1
     }
     if (info.score() == 80) {
         game.setDialogCursor(img`
@@ -546,7 +546,7 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
             . . f f c c c c c c c c . . . . 
             `)
         game.showLongText("Prepare for double fire!", DialogLayout.Bottom)
-        bDoubleAmmo = 1
+        bDoublePower = 1
     }
     if (info.score() == 100) {
         game.setDialogCursor(img`
@@ -568,7 +568,7 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
             . . f f c c c c c c c c . . . . 
             `)
         game.showLongText("Triple fire will melt you!", DialogLayout.Bottom)
-        bTripleAmmo = 1
+        bTriplePower = 1
         effects.blizzard.startScreenEffect()
     }
     if (info.score() == 150) {
@@ -592,7 +592,7 @@ sprites.onOverlap(SpriteKind.heroProjectile, SpriteKind.Player, function (sprite
             `)
         game.showLongText("Now it is time you feel my full wrath!", DialogLayout.Bottom)
         effects.blizzard.endScreenEffect()
-        bESpecialAmmo = 1
+        bESpecialPower = 1
     }
 })
 sprites.onOverlap(SpriteKind.Bonus, SpriteKind.enemyProjectile, function (sprite, otherSprite) {
@@ -999,7 +999,7 @@ sprites.onCreated(SpriteKind.Player, function (sprite) {
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprite.destroy()
-    fireAmmo.setImage(img`
+    firePower.setImage(img`
         . . . . . . . . . . . . . . . . 
         . . . 1 1 1 1 1 1 1 . . . . . . 
         . . 1 c a a a a a 9 1 . . . . . 
@@ -1017,7 +1017,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `)
-    fireAmmo.setKind(SpriteKind.heroProjectile)
+    firePower.setKind(SpriteKind.heroProjectile)
 })
 function createTree () {
     tree = sprites.createProjectileFromSide(trees[randint(0, trees.length - 1)], -50, 0)
@@ -1026,17 +1026,17 @@ function createTree () {
     tree.setKind(SpriteKind.Bkgrd)
 }
 let grass: Sprite = null
-let missleAmmo: Sprite = null
-let fireAmmo3: Sprite = null
-let fireAmmo2: Sprite = null
+let fireballPower: Sprite = null
+let firePower3: Sprite = null
+let firePower2: Sprite = null
 let tree: Sprite = null
-let fireAmmo: Sprite = null
+let firePower: Sprite = null
 let grassImages: Image[] = []
 let trees: Image[] = []
 let enemyFrames: Image[] = []
-let bESpecialAmmo = 0
-let bTripleAmmo = 0
-let bDoubleAmmo = 0
+let bESpecialPower = 0
+let bTriplePower = 0
+let bDoublePower = 0
 let healthBonus: Sprite = null
 let maxFrozen = 0
 let vyPrevEnemy = 0
@@ -1052,15 +1052,15 @@ let bDoubleBonus = 0
 let bTripleBonus = 0
 let maxArmor = 0
 let ctrDamage = 0
-let snowAmmo3: Sprite = null
-let bTripleHAmmo = 0
-let snowAmmo2: Sprite = null
-let bDoubleHAmmo = 0
-let freezeAmmo: Sprite = null
-let bHSpecialAmmo = 0
-let iceAmmo: Sprite = null
-let bIceAmmo = 0
-let snowAmmo: Sprite = null
+let snowPower3: Sprite = null
+let bTripleHPower = 0
+let snowPower2: Sprite = null
+let bDoubleHPower = 0
+let freezePower: Sprite = null
+let bHSpecialPower = 0
+let icePower: Sprite = null
+let bIcePower = 0
+let snowPower: Sprite = null
 let playerframes: Image[] = []
 let bCreateHealthShip = 0
 let shipFrames: Image[] = []
@@ -1270,9 +1270,8 @@ game.setDialogCursor(img`
     ........................
     ........................
     `)
-game.showLongText("Fight fire with ice!  Use your Icelandic sword to fight the fire snake! Chill him with your snow power and you will turn his fire balls to ice.  Collect the ice for points and collect the bonus items!  You will need them!", DialogLayout.Bottom)
-game.showLongText("Shoot with B (X on the keyboard)", DialogLayout.Bottom)
-
+game.showLongText("Fight fire with ice!  Use your Icelandic sword to fight the fire snake! Chill him with your snow power and you will turn his fire to ice.  Collect the ice for points and collect the bonus items!  You will need them!", DialogLayout.Bottom)
+game.showLongText("Shoot with B (X on the keyboard). Hold down for rapid fire.", DialogLayout.Bottom)
 //BEGIN health bar
 function fillHealthBar (healthBar: Sprite, maxHealth: number, currHealth: number) {
     percent = Math.constrain(currHealth / maxHealth, 0, 1)
@@ -1336,7 +1335,7 @@ game.onUpdateInterval(msTimer, function () {
             )
         }
     } else {
-        fireAmmo = sprites.createProjectileFromSprite(img`
+        firePower = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . 4 4 4 4 4 4 4 . . . . . . 
             . . 4 8 2 2 2 2 2 5 4 . . . . . 
@@ -1354,9 +1353,9 @@ game.onUpdateInterval(msTimer, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, enemySprite, randint(-100, -5), 0)
-        fireAmmo.setKind(SpriteKind.enemyProjectile)
-        if (bDoubleAmmo) {
-            fireAmmo2 = sprites.createProjectileFromSprite(img`
+        firePower.setKind(SpriteKind.enemyProjectile)
+        if (bDoublePower) {
+            firePower2 = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . 4 4 4 4 4 4 4 . . . . . . 
                 . . 4 8 2 2 2 2 2 5 4 . . . . . 
@@ -1374,10 +1373,10 @@ game.onUpdateInterval(msTimer, function () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, enemySprite, randint(-100, -5), 15)
-            fireAmmo2.setKind(SpriteKind.enemyProjectile)
+            firePower2.setKind(SpriteKind.enemyProjectile)
         }
-        if (bTripleAmmo) {
-            fireAmmo3 = sprites.createProjectileFromSprite(img`
+        if (bTriplePower) {
+            firePower3 = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . 4 4 4 4 4 4 4 . . . . . . 
                 . . 4 8 2 2 2 2 2 5 4 . . . . . 
@@ -1395,10 +1394,10 @@ game.onUpdateInterval(msTimer, function () {
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, enemySprite, randint(-100, -5), -15)
-            fireAmmo3.setKind(SpriteKind.enemyProjectile)
+            firePower3.setKind(SpriteKind.enemyProjectile)
         }
-        if (bESpecialAmmo) {
-            missleAmmo = sprites.createProjectileFromSprite(img`
+        if (bESpecialPower) {
+            fireballPower = sprites.createProjectileFromSprite(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . 4 4 4 4 . . . . . . 
                 . . . . 4 4 4 5 5 4 4 4 . . . . 
@@ -1416,8 +1415,8 @@ game.onUpdateInterval(msTimer, function () {
                 . . . . . . 4 4 4 4 . . . . . . 
                 . . . . . . . . . . . . . . . . 
                 `, enemySprite, randint(-100, -5), -15)
-            missleAmmo.setKind(SpriteKind.specialEProjectile)
-            missleAmmo.follow(mySprite)
+            fireballPower.setKind(SpriteKind.specialEProjectile)
+            fireballPower.follow(mySprite)
         }
     }
 })
