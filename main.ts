@@ -380,25 +380,25 @@ function getBonus () {
                     `, SpriteKind.ArmorBar)
                 shieldSprite.setPosition(48, 115)
                 shieldSprite.z = 1
-                 shieldSprite = sprites.create(img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . e e e e e e . . . . . 
-                . . . . e 5 4 4 4 4 4 e . . . . 
-                . . . . e 4 5 5 4 4 4 e . . . . 
-                . . . . e 4 4 4 5 5 4 e . . . . 
-                . . . . e 4 4 4 4 4 5 e . . . . 
-                . . . . . e 4 4 4 4 e . . . . . 
-                . . . . . . e 4 4 e . . . . . . 
-                . . . . . . . e e . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `, SpriteKind.ArmorBar)
-                shieldSprite.setPosition(48 + (maxArmor * 3), 115)
+                shieldSprite = sprites.create(img`
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . e e e e e e . . . . . 
+                    . . . . e 5 4 4 4 4 4 e . . . . 
+                    . . . . e 4 5 5 4 4 4 e . . . . 
+                    . . . . e 4 4 4 5 5 4 e . . . . 
+                    . . . . e 4 4 4 4 4 5 e . . . . 
+                    . . . . . e 4 4 4 4 e . . . . . 
+                    . . . . . . e 4 4 e . . . . . . 
+                    . . . . . . . e e . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    `, SpriteKind.ArmorBar)
+                shieldSprite.setPosition(48 + maxArmor * 3, 115)
                 shieldSprite.z = 1
             } else {
                 shieldSprite = sprites.create(img`
@@ -419,7 +419,7 @@ function getBonus () {
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     `, SpriteKind.ArmorBar)
-                shieldSprite.setPosition(48 + (maxArmor * 3), 115)
+                shieldSprite.setPosition(48 + maxArmor * 3, 115)
                 shieldSprite.z = 1
             }
             myHealthBar.setPosition(25, 117)
