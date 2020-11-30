@@ -199,7 +199,7 @@ function hitPlayer () {
     }
 }
 function sendBonus () {
-    if ((Math.percentChance(0.5) && maxArmor < 2) || (Math.percentChance(0.5) && bTripleBonus == 0)) {
+    if (Math.percentChance(0.2) && maxArmor < 2 || Math.percentChance(0.2) && bTripleBonus == 0) {
         createBonusShip()
         bCreateHealthShip = 0
         bNeedHealth = 0
@@ -359,6 +359,66 @@ function getBonus () {
             maxArmor += 1
             maxHealth = maxArmor + 1
             currHealth = maxHealth
+            if (maxArmor == 1) {
+                shieldSprite = sprites.create(img`
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . e e e e e e . . . . . 
+                    . . . . e 5 4 4 4 4 4 e . . . . 
+                    . . . . e 4 5 5 4 4 4 e . . . . 
+                    . . . . e 4 4 4 5 5 4 e . . . . 
+                    . . . . e 4 4 4 4 4 5 e . . . . 
+                    . . . . . e 4 4 4 4 e . . . . . 
+                    . . . . . . e 4 4 e . . . . . . 
+                    . . . . . . . e e . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    `, SpriteKind.ArmorBar)
+                shieldSprite.setPosition(48, 115)
+                 shieldSprite = sprites.create(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . e e e e e e . . . . . 
+                . . . . e 5 4 4 4 4 4 e . . . . 
+                . . . . e 4 5 5 4 4 4 e . . . . 
+                . . . . e 4 4 4 5 5 4 e . . . . 
+                . . . . e 4 4 4 4 4 5 e . . . . 
+                . . . . . e 4 4 4 4 e . . . . . 
+                . . . . . . e 4 4 e . . . . . . 
+                . . . . . . . e e . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, SpriteKind.ArmorBar)
+                shieldSprite.setPosition(48 + (maxArmor * 3), 115)
+            } else {
+                shieldSprite = sprites.create(img`
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . e e e e e e . . . . . 
+                    . . . . e 5 4 4 4 4 4 e . . . . 
+                    . . . . e 4 5 5 4 4 4 e . . . . 
+                    . . . . e 4 4 4 5 5 4 e . . . . 
+                    . . . . e 4 4 4 4 4 5 e . . . . 
+                    . . . . . e 4 4 4 4 e . . . . . 
+                    . . . . . . e 4 4 e . . . . . . 
+                    . . . . . . . e e . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    `, SpriteKind.ArmorBar)
+                shieldSprite.setPosition(48 + (maxArmor * 3), 115)
+            }
             myHealthBar.setPosition(25, 117)
             fillHealthBar(myHealthBar, maxHealth, currHealth)
             game.setDialogCursor(img`
@@ -1052,6 +1112,7 @@ let bESpecialPower = 0
 let bTriplePower = 0
 let bDoublePower = 0
 let healthBonus: Sprite = null
+let shieldSprite: Sprite = null
 let maxFrozen = 0
 let vyPrevEnemy = 0
 let bFrozen = 0
