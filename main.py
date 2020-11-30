@@ -412,26 +412,28 @@ def getBonus():
                     """),
                     SpriteKind.ArmorBar)
                 shieldSprite.set_position(48, 115)
+                shieldSprite.z = 1
                 shieldSprite = sprites.create(img("""
                         . . . . . . . . . . . . . . . . 
-                                        . . . . . . . . . . . . . . . . 
-                                        . . . . . . . . . . . . . . . . 
-                                        . . . . . . . . . . . . . . . . 
-                                        . . . . . . . . . . . . . . . . 
-                                        . . . . . e e e e e e . . . . . 
-                                        . . . . e 5 4 4 4 4 4 e . . . . 
-                                        . . . . e 4 5 5 4 4 4 e . . . . 
-                                        . . . . e 4 4 4 5 5 4 e . . . . 
-                                        . . . . e 4 4 4 4 4 5 e . . . . 
-                                        . . . . . e 4 4 4 4 e . . . . . 
-                                        . . . . . . e 4 4 e . . . . . . 
-                                        . . . . . . . e e . . . . . . . 
-                                        . . . . . . . . . . . . . . . . 
-                                        . . . . . . . . . . . . . . . . 
-                                        . . . . . . . . . . . . . . . .
+                                            . . . . . . . . . . . . . . . . 
+                                            . . . . . . . . . . . . . . . . 
+                                            . . . . . . . . . . . . . . . . 
+                                            . . . . . . . . . . . . . . . . 
+                                            . . . . . e e e e e e . . . . . 
+                                            . . . . e 5 4 4 4 4 4 e . . . . 
+                                            . . . . e 4 5 5 4 4 4 e . . . . 
+                                            . . . . e 4 4 4 5 5 4 e . . . . 
+                                            . . . . e 4 4 4 4 4 5 e . . . . 
+                                            . . . . . e 4 4 4 4 e . . . . . 
+                                            . . . . . . e 4 4 e . . . . . . 
+                                            . . . . . . . e e . . . . . . . 
+                                            . . . . . . . . . . . . . . . . 
+                                            . . . . . . . . . . . . . . . . 
+                                            . . . . . . . . . . . . . . . .
                     """),
                     SpriteKind.ArmorBar)
-                shieldSprite.set_position(48 + (maxArmor * 3), 115)
+                shieldSprite.set_position(48 + maxArmor * 3, 115)
+                shieldSprite.z = 1
             else:
                 shieldSprite = sprites.create(img("""
                         . . . . . . . . . . . . . . . . 
@@ -452,7 +454,8 @@ def getBonus():
                                             . . . . . . . . . . . . . . . .
                     """),
                     SpriteKind.ArmorBar)
-                shieldSprite.set_position(48 + (maxArmor * 3), 115)
+                shieldSprite.set_position(48 + maxArmor * 3, 115)
+                shieldSprite.z = 1
             myHealthBar.set_position(25, 117)
             fillHealthBar(myHealthBar, maxHealth, currHealth)
             game.set_dialog_cursor(img("""
@@ -1402,7 +1405,8 @@ game.show_long_text("Fight fire with ice!  Use your Icelandic sword to fight the
 game.show_long_text("Shoot with B (X on the keyboard). Hold down for rapid fire.",
     DialogLayout.BOTTOM)
 myHealthBar = sprites.create(image.create(40, 4), SpriteKind.ArmorBar)
-myHealthBar.set_position(0, 0)
+myHealthBar.set_position(0, -2)
+myHealthBar.z = 1
 maxHealth = 1
 currHealth = maxHealth
 targetHealth = maxHealth
