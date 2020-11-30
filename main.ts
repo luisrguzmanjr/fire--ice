@@ -379,6 +379,7 @@ function getBonus () {
                     . . . . . . . . . . . . . . . . 
                     `, SpriteKind.ArmorBar)
                 shieldSprite.setPosition(48, 115)
+                shieldSprite.z = 1
                  shieldSprite = sprites.create(img`
                 . . . . . . . . . . . . . . . . 
                 . . . . . . . . . . . . . . . . 
@@ -398,6 +399,7 @@ function getBonus () {
                 . . . . . . . . . . . . . . . . 
                 `, SpriteKind.ArmorBar)
                 shieldSprite.setPosition(48 + (maxArmor * 3), 115)
+                shieldSprite.z = 1
             } else {
                 shieldSprite = sprites.create(img`
                     . . . . . . . . . . . . . . . . 
@@ -418,6 +420,7 @@ function getBonus () {
                     . . . . . . . . . . . . . . . . 
                     `, SpriteKind.ArmorBar)
                 shieldSprite.setPosition(48 + (maxArmor * 3), 115)
+                shieldSprite.z = 1
             }
             myHealthBar.setPosition(25, 117)
             fillHealthBar(myHealthBar, maxHealth, currHealth)
@@ -1354,7 +1357,8 @@ game.setDialogCursor(img`
 game.showLongText("Fight fire with ice!  Use your Icelandic sword to fight the fire snake! Chill him with your snow power and you will turn his fire to ice.  Collect the ice for points and collect the bonus items!  You will need them!", DialogLayout.Bottom)
 game.showLongText("Shoot with B (X on the keyboard). Hold down for rapid fire.", DialogLayout.Bottom)
 myHealthBar = sprites.create(image.create(40, 4), SpriteKind.ArmorBar)
-myHealthBar.setPosition(0, 0)
+myHealthBar.setPosition(0, -2)
+myHealthBar.z = 1
 maxHealth = 1
 currHealth = maxHealth
 targetHealth = maxHealth
